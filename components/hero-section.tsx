@@ -2,8 +2,12 @@
 
 import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import InteractivePortrait from "./interactive-portrait"
+import dynamic from "next/dynamic"
 import SignatureMarqueeSection from "./signature-marquee-section"
+
+const InteractivePortrait = dynamic(() => import("./interactive-portrait"), {
+  ssr: false,
+})
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null)
