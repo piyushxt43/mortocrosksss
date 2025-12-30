@@ -1,16 +1,8 @@
 import React from "react"
 import type { Metadata } from "next"
 import { Roboto, Libre_Baskerville, Alex_Brush, Oswald } from "next/font/google"
-import dynamic from "next/dynamic"
+import ClientWrapper from "@/components/client-wrapper"
 import "./globals.css"
-
-const SmoothScroll = dynamic(() => import("@/components/smooth-scroll"), {
-  ssr: false,
-})
-
-const Preloader = dynamic(() => import("@/components/preloader"), {
-  ssr: false,
-})
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700", "900"],
@@ -74,8 +66,7 @@ export default function RootLayout({
         className={`font-sans antialiased ${roboto.variable} ${libreBaskerville.variable} ${alexBrush.variable} ${oswald.variable}`}
         suppressHydrationWarning
       >
-        <Preloader />
-        <SmoothScroll>{children}</SmoothScroll>
+        <ClientWrapper>{children}</ClientWrapper>
       </body>
     </html>
   )

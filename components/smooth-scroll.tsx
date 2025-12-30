@@ -2,22 +2,22 @@
 
 import type React from "react"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 export default function SmoothScroll({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [isClient, setIsClient] = useState(false)
-
   useEffect(() => {
-    setIsClient(true)
     if (typeof window === 'undefined') return
 
     // Dynamically import Lenis only on client
+    let lenisInstance: any = null
+    let rafId: number | null = null
+
     import('lenis').then((Lenis) => {
-      const lenis = new Lenis.default({
+      lenisInstance = new Lenis.default({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
@@ -26,16 +26,23 @@ export default function SmoothScroll({
       })
 
       function raf(time: number) {
-        lenis.raf(time)
-        requestAnimationFrame(raf)
+        if (lenisInstance) {
+          lenisInstance.raf(time)
+          rafId = requestAnimationFrame(raf)
+        }
       }
 
-      requestAnimationFrame(raf)
-
-      return () => {
-        lenis.destroy()
-      }
+      rafId = requestAnimationFrame(raf)
     })
+
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId)
+      }
+      if (lenisInstance) {
+        lenisInstance.destroy()
+      }
+    }
   }, [])
 
   return <>{children}</>
