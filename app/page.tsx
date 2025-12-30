@@ -15,6 +15,9 @@ import { RaceDayCountdown } from "@/components/race-day-countdown"
 import { InteractiveSchedule } from "@/components/interactive-schedule"
 import { HistoricalResultsAccordion } from "@/components/historical-results-accordion"
 
+// Disable static generation to prevent SSR errors
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   return (
     <main className="relative">

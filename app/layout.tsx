@@ -1,9 +1,16 @@
 import React from "react"
 import type { Metadata } from "next"
 import { Roboto, Libre_Baskerville, Alex_Brush, Oswald } from "next/font/google"
-import SmoothScroll from "@/components/smooth-scroll"
-import Preloader from "@/components/preloader"
+import dynamic from "next/dynamic"
 import "./globals.css"
+
+const SmoothScroll = dynamic(() => import("@/components/smooth-scroll"), {
+  ssr: false,
+})
+
+const Preloader = dynamic(() => import("@/components/preloader"), {
+  ssr: false,
+})
 
 const roboto = Roboto({
   weight: ["300", "400", "500", "700", "900"],
